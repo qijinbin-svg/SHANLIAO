@@ -5,6 +5,7 @@ import { Send, Mic, Smile, Shield, AlertTriangle, Globe } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
 import MessageBubble from "@/components/MessageBubble";
 import { Message } from "@/types";
+import { sendKouziMessage } from "@/lib/kouzi";
 
 const ChatRoom = () => {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ const ChatRoom = () => {
     setMessages(mockMessages);
   }, []);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (inputMessage.trim()) {
       const newMessage: Message = {
         id: Date.now().toString(),
@@ -70,6 +71,16 @@ const ChatRoom = () => {
       };
       setMessages(prev => [...prev, newMessage]);
       setInputMessage("");
+      const res = await sendKouziMessage(newMessage.content);
+      const reply: Message = {
+        id: (Date.now() + 1).toString(),
+        senderId: "other",
+        content: res.reply,
+        type: "text",
+        timestamp: Date.now(),
+        translated: res.translated
+      };
+      setMessages(prev => [...prev, reply]);
     }
   };
 

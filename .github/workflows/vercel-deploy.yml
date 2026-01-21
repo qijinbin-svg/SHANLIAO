@@ -19,5 +19,9 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build
+        env:
+          VITE_KOUZI_ENDPOINT: ${{ secrets.VITE_KOUZI_ENDPOINT }}
+          VITE_KOUZI_TOKEN: ${{ secrets.VITE_KOUZI_TOKEN }}
+          VITE_KOUZI_SESSION_ID: ${{ secrets.VITE_KOUZI_SESSION_ID }}
       - run: npx vercel pull --yes --environment=production --token $VERCEL_TOKEN
       - run: npx vercel deploy --prebuilt --prod --yes --token $VERCEL_TOKEN

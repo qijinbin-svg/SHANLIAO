@@ -75,3 +75,14 @@ export default tseslint.config({
   - `VERCEL_PROJECT_ID`：项目 ID（Vercel 控制台获取）
 - 工作流文件：`.github/workflows/vercel-deploy.yml`
 - 手动触发部署：在 GitHub Actions 页面使用 `Run workflow`
+
+## 接入“扣子编程”对话
+
+- 复制 `.env.example` 为 `.env.local`，填写：
+  - `VITE_KOUZI_ENDPOINT`：扣子服务的对话接口地址或 Webhook
+  - `VITE_KOUZI_TOKEN`：访问令牌
+  - `VITE_KOUZI_SESSION_ID`：会话标识（可选）
+- 发送消息入口位于聊天页，代码调用位置：
+  - [ChatRoom.tsx](file:///c:/shanliao/demo/src/pages/ChatRoom.tsx) 使用 `sendKouziMessage`
+  - 连接器实现： [kouzi.ts](file:///c:/shanliao/demo/src/lib/kouzi.ts)
+- 部署到 Vercel 后，通过环境变量注入同名键，前端将使用接口完成消息往返
