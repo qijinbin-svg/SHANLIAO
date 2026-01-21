@@ -78,11 +78,17 @@ export default tseslint.config({
 
 ## 接入“扣子编程”对话
 
-- 复制 `.env.example` 为 `.env.local`，填写：
-  - `VITE_KOUZI_ENDPOINT`：扣子服务的对话接口地址或 Webhook
-  - `VITE_KOUZI_TOKEN`：访问令牌
-  - `VITE_KOUZI_SESSION_ID`：会话标识（可选）
+- 推荐使用后端代理防止 CORS 与令牌泄露：
+  - 复制 `.env.example` 为 `.env.local`，填写服务端变量：
+    - `KOUZI_ENDPOINT`：扣子服务接口地址或 Webhook
+    - `KOUZI_TOKEN`：访问令牌
+    - `KOUZI_SESSION_ID`：会话标识（可选）
+  - 前端变量可选：
+    - `VITE_KOUZI_SESSION_ID`：用于传递会话标识
 - 发送消息入口位于聊天页，代码调用位置：
   - [ChatRoom.tsx](file:///c:/shanliao/demo/src/pages/ChatRoom.tsx) 使用 `sendKouziMessage`
-  - 连接器实现： [kouzi.ts](file:///c:/shanliao/demo/src/lib/kouzi.ts)
-- 部署到 Vercel 后，通过环境变量注入同名键，前端将使用接口完成消息往返
+  - 前端连接器： [kouzi.ts](file:///c:/shanliao/demo/src/lib/kouzi.ts) 默认调用 `/api/kouzi`
+  - 后端代理函数： [api/kouzi.ts](file:///c:/shanliao/demo/api/kouzi.ts) 代转发到扣子服务
+- Vercel 环境变量配置（Project → Settings → Environment Variables）：
+  - `KOUZI_ENDPOINT`、`KOUZI_TOKEN`、`KOUZI_SESSION_ID`
+  - 可选：`VITE_KOUZI_SESSION_ID`

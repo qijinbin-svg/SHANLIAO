@@ -1,16 +1,11 @@
 export async function sendKouziMessage(text: string, sessionId?: string) {
-  const endpoint = import.meta.env.VITE_KOUZI_ENDPOINT;
-  const token = import.meta.env.VITE_KOUZI_TOKEN;
+  const endpoint = import.meta.env.VITE_KOUZI_ENDPOINT || "/api/kouzi";
   const sid = sessionId || import.meta.env.VITE_KOUZI_SESSION_ID;
-  if (!endpoint || !token) {
-    return { reply: "服务未配置", translated: undefined };
-  }
   try {
     const res = await fetch(endpoint, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({ text, sessionId: sid })
     });
